@@ -57,7 +57,6 @@ def get_cmc_data(crypto):
 
     r=requests.get(url, headers=headers, params=params).json()
     price=r['data'][crypto]['quote']['USD']['price']
-
     write_json(r)
 
     return price

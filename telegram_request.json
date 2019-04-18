@@ -1,0 +1,28 @@
+{
+    "update_id": 762250594,
+    "message": {
+        "message_id": 29,
+        "from": {
+            "id": 520948368,
+            "is_bot": false,
+            "first_name": "Selcuk goktas",
+            "username": "selcukgoktas",
+            "language_code": "tr"
+        },
+        "chat": {
+            "id": 520948368,
+            "first_name": "Selcuk goktas",
+            "username": "selcukgoktas",
+            "type": "private"
+        },
+        "date": 1555579255,
+        "text": "/btc",
+        "entities": [
+            {
+                "offset": 0,
+                "length": 4,
+                "type": "bot_command"
+            }
+        ]
+    }
+}
