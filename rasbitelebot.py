@@ -18,7 +18,8 @@
 # /sendMessage
 # getUpdates and SendMessage will be handled by webhook
 # webHook : https://api.telegram.org/bot797643623:AAGd-IT0Dz0bVjX7xuscSmJduT25myxeJKU/setWebhook?url=https://parum.serveo.net/
-#
+# bot token must be changed with yours
+
 
 
 import sys
