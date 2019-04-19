@@ -101,7 +101,7 @@ def index():
 
 
     else:
-        return '<h1> Rasbitelebot</h1>'
+        return '<h1> Rasbitelebot</h1> <p>Rasberry Telegram Bot has been created for the purpose of education.</p>'
 
 
 
