@@ -24,14 +24,20 @@
 
 import sys
 import time
+
 from tokens import coinmarket
 from tokens import token
+
 import requests
 import json
+import re
+
 from  flask import Flask
 from flask import request
 from flask import Response
-import re
+
+
+
 
 
 
@@ -94,14 +100,17 @@ def index():
             send_message(chat_id, 'wrong data')
             return Response('Ok', status=200)
 
-        price=get_cmc_data(symbol)
-        send_message(chat_id,price)
         write_json(msg, 'telegram_request.json')
-        return Response('Ok', status=200)
+
+        for tekrar in range(20):
+            price=get_cmc_data(symbol)
+            send_message(chat_id,price)
+            sleep(1000)
+            return Response('Ok', status=200)
 
 
     else:
-        return '<h1> Rasbitelebot</h1> <p>Rasberry Telegram Bot has been created for the purpose of education.</p> In order to reach repositories visit https://github.com/arsivcix/rasbitelebot/'
+        return '<h1> Rasbitelebot </h1> <p>Rasberry Telegram Bot has been created for the purpose of education.</p> In order to reach repositories visit https://github.com/arsivcix/rasbitelebot/'
 
 
 
