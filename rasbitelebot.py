@@ -101,7 +101,7 @@ def index():
 
 
     else:
-        return '<h1> Rasbitelebot</h1> <p>Rasberry Telegram Bot has been created for the purpose of education.</p>'
+        return '<h1> Rasbitelebot</h1> <p>Rasberry Telegram Bot has been created for the purpose of education.</p> In order to reach repositories visit https://github.com/arsivcix/rasbitelebot/'
 
 
 
