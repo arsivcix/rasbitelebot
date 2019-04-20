@@ -40,7 +40,7 @@ from flask import Response
 
 
 
-
+html='<h1> Rasbitelebot </h1> <p>Rasberry Telegram Bot has been created for the purpose of education.</p> In order to reach repositories visit https://github.com/arsivcix/rasbitelebot/'
 
 
 print('RasbiteleBot online')
@@ -72,14 +72,26 @@ def get_cmc_data(crypto):
 def parse_message(message):
     chat_id = message['message']['chat']['id']
     txt=message['message']['text']
+
     pattern=r'/[a-zA-Z]{2,4}'
+    compat=r'_[a-zA-Z]{2,6}'
     ticker = re.findall(pattern, txt)
     if ticker:
         symbol = ticker[0][1:].upper()  #it contains data which is suitable our pattern
     else:
         symbol = ''
 
-    return chat_id,symbol
+    cticker = re.findall(compat,txt)
+    if cticker:
+        command = cticker[0][1:].upper()
+    else:
+        command = ''
+
+
+    return chat_id,symbol,command
+
+
+
 
 def send_message(chat_id, text='your text'):
     url=f'https://api.telegram.org/bot{token}/sendMessage'
@@ -94,23 +106,34 @@ def send_message(chat_id, text='your text'):
 def index():
     if request.method == 'POST':
         msg = request.get_json()
-        chat_id, symbol = parse_message(msg)
-
-        if not symbol:
-            send_message(chat_id, 'wrong data')
-            return Response('Ok', status=200)
-
         write_json(msg, 'telegram_request.json')
+        chat_id, symbol,command = parse_message(msg)
 
-        for tekrar in range(20):
-            price=get_cmc_data(symbol)
-            send_message(chat_id,price)
-            sleep(1000)
+        if not symbol:  #   / show default format
+            send_message(chat_id, 'your command must be :  /yourcoin _command (_invest or _exit) for example /btc _invest /btc exit')
             return Response('Ok', status=200)
+        else:
+            price=get_cmc_data(symbol)
+            if not command: # only show value
+                send_message(chat_id,price)
+                return Response('Ok', status=200)
+            else: # show continuos ----->
+                # if there is a @command (invest or exit)
+                if command=='EXIT':
+                    send_message(chat_id, 'copy exit')
+                    return Response('Ok', status=200)
+                if command=='INVEST': # loop is created here..
+                    send_message(chat_id, f'symbol ={symbol} value = {price} I am {command} ing')
+                    return Response('Ok', status=200)
+                else:
+                    send_message(chat_id, 'your command must be :  /yourcoin _command (_invest or _exit) for example /btc _invest /btc exit')
+                    return Response('Ok', status=200)
+# if command is invest it will check price continuously
 
 
+#if no post and get show bellow
     else:
-        return '<h1> Rasbitelebot </h1> <p>Rasberry Telegram Bot has been created for the purpose of education.</p> In order to reach repositories visit https://github.com/arsivcix/rasbitelebot/'
+        return html+'<p> bot is waiting your orders</p>'
 
 
 
