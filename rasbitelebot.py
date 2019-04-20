@@ -36,7 +36,21 @@ from  flask import Flask
 from flask import request
 from flask import Response
 
+import RPi.GPIO as GPIO
 
+
+GPIO.cleanup()
+red1=21
+red2=20
+red3=16
+red4=12
+red5=7
+
+green1=26
+green2=19
+green3=13
+green4=6
+green5=5
 
 
 
@@ -48,6 +62,57 @@ invest_price=0
 
 print('RasbiteleBot online')
 print('------------------ ')
+
+
+def setuprasbi():
+    GPIO.setmode(GPIO.BCM)
+
+    GPIO.setup(red1,GPIO.OUT)
+    GPIO.setup(red2,GPIO.OUT)
+    GPIO.setup(red3,GPIO.OUT)
+    GPIO.setup(red4,GPIO.OUT)
+    GPIO.setup(red5,GPIO.OUT)
+
+    GPIO.setup(green1,GPIO.OUT)
+    GPIO.setup(green2,GPIO.OUT)
+    GPIO.setup(green3,GPIO.OUT)
+    GPIO.setup(green4,GPIO.OUT)
+    GPIO.setup(green5,GPIO.OUT)
+
+
+def pinsoff():
+    GPIO.output(red1,GPIO.LOW)
+    GPIO.output(red2,GPIO.LOW)
+    GPIO.output(red3,GPIO.LOW)
+    GPIO.output(red4,GPIO.LOW)
+    GPIO.output(red5,GPIO.LOW)
+
+    GPIO.output(green1,GPIO.LOW)
+    GPIO.output(green2,GPIO.LOW)
+    GPIO.output(green3,GPIO.LOW)
+    GPIO.output(green4,GPIO.LOW)
+    GPIO.output(green5,GPIO.LOW)
+
+
+def redled(p):
+    GPIO.output(red1,p)
+    GPIO.output(red2,p)
+    GPIO.output(red3,p)
+    GPIO.output(red4,p)
+    GPIO.output(red5,p)
+
+def greenled(p):
+    GPIO.output(green1,p)
+    GPIO.output(green2,p)
+    GPIO.output(green3,p)
+    GPIO.output(green4,p)
+    GPIO.output(green5,p)
+
+
+def cleanrasbi():
+    pinsoff()
+    GPIO.cleanup()
+
 
 
 app = Flask(__name__)
@@ -129,6 +194,9 @@ def index():
                     send_message(chat_id, 'copy exit')
                     html=html0  #html zero position
                     invest_price=0
+                    pinsoff()
+                    cleanrasbi()
+                    
                     return Response('Ok', status=200)
                 if command=='INVEST': # loop is created here..
 
@@ -160,10 +228,19 @@ def index():
             price=get_cmc_data(invest_symbol)
             if price > invest_price:
                 html=html+f'<body><p style="color:green;">latest value is {price}<p></body>'
+                greenled(1)
+                time.sleep(15)
+                greenled(0)
+
             if price == invest_price:
                 html=html+f'<body><p style="color:black;">latest value is {price}<p></body>'
+
             if price < invest_price:
                 html=html+f'<body><p style="color:red;">latest value is {price}<p></body>'
+                redled(1)
+                time.sleep(15)
+                redled(0)
+
 
         return html
 
@@ -178,4 +255,7 @@ def main():
 
 if __name__ == '__main__':
     #main()
+    setuprasbi() #raspberry is set as default pin mapping and 10 pis is set as output to blink led
+    pinsoff()   # after raspberry was set we set pins 0 volt .
+
     app.run(debug=True)
