@@ -231,6 +231,7 @@ def index():
             price=get_cmc_data(invest_symbol)
             if price > invest_price:
                 html=html+f'<body><p style="color:green;">latest value is {price}<p></body>'
+                setuprasbi()
                 greenled(1)
                 time.sleep(15)
                 greenled(0)
@@ -240,6 +241,7 @@ def index():
 
             if price < invest_price:
                 html=html+f'<body><p style="color:red;">latest value is {price}<p></body>'
+                setuprasbi()
                 redled(1)
                 time.sleep(15)
                 redled(0)
