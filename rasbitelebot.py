@@ -71,7 +71,7 @@ def setuprasbi():
 setuprasbi()
 
 
-html0='<head> <title> Rasbitelebot Welcome</title> <meta http-equiv="refresh" content="10"> </head> <h1> Rasbitelebot Welcome </h1> <p>Rasberry Telegram Bot has been created for the purpose of education.</p> In order to reach repositories visit </p> <a href="https://github.com/arsivcix/rasbitelebot/">https://github.com/arsivcix/rasbitelebot/</a> '
+html0='<head> <title> Rasbitelebot Welcome</title> <meta http-equiv="refresh" content="30"> </head> <h1> Rasbitelebot Welcome </h1> <p>Rasberry Telegram Bot has been created for the purpose of education.</p> In order to reach repositories visit </p> <a href="https://github.com/arsivcix/rasbitelebot/">https://github.com/arsivcix/rasbitelebot/</a> '
 html = html0
 
 invest_symbol=''
@@ -84,18 +84,7 @@ print('------------------ ')
 
 
 
-def pinsoff():
-    GPIO.output(red1,GPIO.LOW)
-    GPIO.output(red2,GPIO.LOW)
-    GPIO.output(red3,GPIO.LOW)
-    GPIO.output(red4,GPIO.LOW)
-    GPIO.output(red5,GPIO.LOW)
 
-    GPIO.output(green1,GPIO.LOW)
-    GPIO.output(green2,GPIO.LOW)
-    GPIO.output(green3,GPIO.LOW)
-    GPIO.output(green4,GPIO.LOW)
-    GPIO.output(green5,GPIO.LOW)
 
 
 def redled(pr):
@@ -111,6 +100,16 @@ def greenled(pg):
     GPIO.output(green3,pg)
     GPIO.output(green4,pg)
     GPIO.output(green5,pg)
+
+
+
+def pinsoff():
+    redled(0)
+    greenled(0)
+
+def pinson():
+    redled(1)
+    greenled(1)
 
 
 def cleanrasbi():
@@ -191,11 +190,10 @@ def index():
             price=get_cmc_data(symbol)
             if not command: # only show value
                 send_message(chat_id,price)
-                redled(1)
-                greenled(1)
-                time.sleep(.5)
-                redled(0)
-                greenled(0)
+                pinson()
+                time.sleep(5)
+                pinsoff()
+
 
                 return Response('Ok', status=200)
             else: # show continuos ----->
@@ -218,7 +216,7 @@ def index():
                     invest_symbol=symbol
                     invest_price=price
 
-                    html=f'<head> <title>Rasbitelebot On The Job</title> <meta http-equiv="refresh" content="5"> </head> <body> <h1>Rasbitelebot</h1><h2>You are selected to invest in {invest_symbol} </h2> <h3>The value is {invest_price}</h3> <h3> You can see price change from the red and green lights down and up. </h3> </body>'
+                    html=f'<head> <title>Rasbitelebot On The Job</title> <meta http-equiv="refresh" content="15"> </head> <body> <h1>Rasbitelebot</h1><h2>You are selected to invest in {invest_symbol} </h2> <h3>The value is {invest_price}</h3> <h3> You can see price change from the red and green lights down and up. </h3> </body>'
 
                     send_message(chat_id, f'You are invested in {invest_symbol} with value of {invest_price}')
                     return Response('Ok', status=200)
@@ -241,19 +239,18 @@ def index():
             price=get_cmc_data(invest_symbol)
             if price > invest_price:
                 html=html+f'<body><p style="color:green;">latest value is {price}<p></body>'
-                greenled('1')
-                time.sleep(.5)
+                greenled(1)
+                time.sleep(5)
 
 
             if price == invest_price:
                 html=html+f'<body><p style="color:black;">latest value is {price}<p></body>'
-                greenled(0)
-                redled(0)
-
+                pinsoff()
+                
             if price < invest_price:
                 html=html+f'<body><p style="color:red;">latest value is {price}<p></body>'
-                redled('1')
-                time.sleep(.5)
+                redled(1)
+                time.sleep(5)
 
 
 
