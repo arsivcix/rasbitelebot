@@ -214,7 +214,7 @@ def index():
 
                 if command =='GROFF':
                     greenled(0)
-                
+
                 if command=='EXIT':
                     send_message(chat_id, 'copy exit')
                     html=html0  #html zero position
@@ -256,7 +256,7 @@ def index():
                 html=html+f'<body><p style="color:green;">latest value is {price}<p></body>'
                 greenled(1)
                 time.sleep(5)
-
+                greenled(0)
 
             if price == invest_price:
                 html=html+f'<body><p style="color:black;">latest value is {price}<p></body>'
@@ -266,6 +266,7 @@ def index():
                 html=html+f'<body><p style="color:red;">latest value is {price}<p></body>'
                 redled(1)
                 time.sleep(5)
+                redled(0)
 
 
 
