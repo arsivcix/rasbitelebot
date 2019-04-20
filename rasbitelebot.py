@@ -41,7 +41,8 @@ from flask import Response
 
 
 html='<h1> Rasbitelebot </h1> <p>Rasberry Telegram Bot has been created for the purpose of education.</p> In order to reach repositories visit https://github.com/arsivcix/rasbitelebot/'
-
+invest_symbol=''
+invest_price=0
 
 print('RasbiteleBot online')
 print('------------------ ')
@@ -123,8 +124,24 @@ def index():
                     send_message(chat_id, 'copy exit')
                     return Response('Ok', status=200)
                 if command=='INVEST': # loop is created here..
-                    send_message(chat_id, f'symbol ={symbol} value = {price} I am {command} ing')
+
+
+                    global html
+                    global invest_price
+                    global invest_symbol
+                    invest_symbol=symbol
+                    invest_price=price
+
+                    html=f'<head> <title>Rasbitelebot On The Job</title> <meta http-equiv="refresh" content="30"> </head> <body> <h1>Rasbitelebot</h1><h2>You are selected to invest in {invest_symbol} </h2> <h3>The value is {invest_price}</h3> <h3> You can see price change from the red and green lights down and up. </h3> </body>'
+
+                    send_message(chat_id, f'You are invested in {invest_symbol} with value of {invest_price}')
                     return Response('Ok', status=200)
+
+
+
+
+
+
                 else:
                     send_message(chat_id, 'your command must be :  /yourcoin _command (_invest or _exit) for example /btc _invest /btc exit')
                     return Response('Ok', status=200)
@@ -133,7 +150,17 @@ def index():
 
 #if no post and get show bellow
     else:
-        return html+'<p> bot is waiting your orders</p>'
+
+        if invest_price!=0:
+            price=get_cmc_data(invest_symbol)
+            if price > invest_price:
+                html=html+f'<body><p style="color:green;">latest value is {price}<p></body>'
+            if price == invest_price:
+                html=html+f'<body><p style="color:black;">latest value is {price}<p></body>'
+            if price < invest_price:
+                html=html+f'<body><p style="color:red;">latest value is {price}<p></body>'
+
+        return html
 
 
 
