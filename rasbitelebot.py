@@ -52,18 +52,6 @@ green3=13
 green4=6
 green5=5
 
-
-
-html0='<head> <title> Rasbitelebot Welcome</title> <meta http-equiv="refresh" content="30"> </head> <h1> Rasbitelebot Welcome </h1> <p>Rasberry Telegram Bot has been created for the purpose of education.</p> In order to reach repositories visit </p> <a href="https://github.com/arsivcix/rasbitelebot/">https://github.com/arsivcix/rasbitelebot/</a> '
-html = html0
-
-invest_symbol=''
-invest_price=0
-
-print('RasbiteleBot online')
-print('------------------ ')
-
-
 def setuprasbi():
     GPIO.setmode(GPIO.BCM)
 
@@ -78,6 +66,21 @@ def setuprasbi():
     GPIO.setup(green3,GPIO.OUT)
     GPIO.setup(green4,GPIO.OUT)
     GPIO.setup(green5,GPIO.OUT)
+
+setuprasbi()
+
+
+html0='<head> <title> Rasbitelebot Welcome</title> <meta http-equiv="refresh" content="30"> </head> <h1> Rasbitelebot Welcome </h1> <p>Rasberry Telegram Bot has been created for the purpose of education.</p> In order to reach repositories visit </p> <a href="https://github.com/arsivcix/rasbitelebot/">https://github.com/arsivcix/rasbitelebot/</a> '
+html = html0
+
+invest_symbol=''
+invest_price=0
+
+print('RasbiteleBot online')
+print('------------------ ')
+
+
+
 
 
 def pinsoff():
@@ -196,7 +199,7 @@ def index():
                     invest_price=0
                     pinsoff()
                     cleanrasbi()
-                    
+
                     return Response('Ok', status=200)
                 if command=='INVEST': # loop is created here..
 
