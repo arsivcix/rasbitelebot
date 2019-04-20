@@ -191,11 +191,11 @@ def index():
             if not command: # only show value
                 send_message(chat_id,price)
                 pinson()
-                time.sleep(5)
+                time.sleep(.2)
                 pinsoff()
-
-
                 return Response('Ok', status=200)
+
+
             else: # show continuos ----->
 
                 # if there is a @command (invest or exit)
@@ -246,7 +246,7 @@ def index():
             if price == invest_price:
                 html=html+f'<body><p style="color:black;">latest value is {price}<p></body>'
                 pinsoff()
-                
+
             if price < invest_price:
                 html=html+f'<body><p style="color:red;">latest value is {price}<p></body>'
                 redled(1)
