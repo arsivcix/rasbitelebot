@@ -40,6 +40,7 @@ import RPi.GPIO as GPIO
 
 
 GPIO.cleanup()
+
 red1=21
 red2=20
 red3=16
@@ -70,7 +71,7 @@ def setuprasbi():
 setuprasbi()
 
 
-html0='<head> <title> Rasbitelebot Welcome</title> <meta http-equiv="refresh" content="30"> </head> <h1> Rasbitelebot Welcome </h1> <p>Rasberry Telegram Bot has been created for the purpose of education.</p> In order to reach repositories visit </p> <a href="https://github.com/arsivcix/rasbitelebot/">https://github.com/arsivcix/rasbitelebot/</a> '
+html0='<head> <title> Rasbitelebot Welcome</title> <meta http-equiv="refresh" content="10"> </head> <h1> Rasbitelebot Welcome </h1> <p>Rasberry Telegram Bot has been created for the purpose of education.</p> In order to reach repositories visit </p> <a href="https://github.com/arsivcix/rasbitelebot/">https://github.com/arsivcix/rasbitelebot/</a> '
 html = html0
 
 invest_symbol=''
@@ -97,19 +98,19 @@ def pinsoff():
     GPIO.output(green5,GPIO.LOW)
 
 
-def redled(p):
-    GPIO.output(red1,p)
-    GPIO.output(red2,p)
-    GPIO.output(red3,p)
-    GPIO.output(red4,p)
-    GPIO.output(red5,p)
+def redled(pr):
+    GPIO.output(red1,pr)
+    GPIO.output(red2,pr)
+    GPIO.output(red3,pr)
+    GPIO.output(red4,pr)
+    GPIO.output(red5,pr)
 
-def greenled(p):
-    GPIO.output(green1,p)
-    GPIO.output(green2,p)
-    GPIO.output(green3,p)
-    GPIO.output(green4,p)
-    GPIO.output(green5,p)
+def greenled(pg):
+    GPIO.output(green1,pg)
+    GPIO.output(green2,pg)
+    GPIO.output(green3,pg)
+    GPIO.output(green4,pg)
+    GPIO.output(green5,pg)
 
 
 def cleanrasbi():
@@ -190,25 +191,34 @@ def index():
             price=get_cmc_data(symbol)
             if not command: # only show value
                 send_message(chat_id,price)
+                redled(1)
+                greenled(1)
+                time.sleep(.5)
+                redled(0)
+                greenled(0)
+
                 return Response('Ok', status=200)
             else: # show continuos ----->
+
                 # if there is a @command (invest or exit)
+
                 if command=='EXIT':
                     send_message(chat_id, 'copy exit')
                     html=html0  #html zero position
                     invest_price=0
                     pinsoff()
                     cleanrasbi()
-
                     return Response('Ok', status=200)
+
+
                 if command=='INVEST': # loop is created here..
 
 
-
+                    setuprasbi()
                     invest_symbol=symbol
                     invest_price=price
 
-                    html=f'<head> <title>Rasbitelebot On The Job</title> <meta http-equiv="refresh" content="10"> </head> <body> <h1>Rasbitelebot</h1><h2>You are selected to invest in {invest_symbol} </h2> <h3>The value is {invest_price}</h3> <h3> You can see price change from the red and green lights down and up. </h3> </body>'
+                    html=f'<head> <title>Rasbitelebot On The Job</title> <meta http-equiv="refresh" content="5"> </head> <body> <h1>Rasbitelebot</h1><h2>You are selected to invest in {invest_symbol} </h2> <h3>The value is {invest_price}</h3> <h3> You can see price change from the red and green lights down and up. </h3> </body>'
 
                     send_message(chat_id, f'You are invested in {invest_symbol} with value of {invest_price}')
                     return Response('Ok', status=200)
@@ -231,20 +241,20 @@ def index():
             price=get_cmc_data(invest_symbol)
             if price > invest_price:
                 html=html+f'<body><p style="color:green;">latest value is {price}<p></body>'
-                setuprasbi()
-                greenled(1)
-                time.sleep(15)
-                greenled(0)
+                greenled('1')
+                time.sleep(.5)
+
 
             if price == invest_price:
                 html=html+f'<body><p style="color:black;">latest value is {price}<p></body>'
+                greenled(0)
+                redled(0)
 
             if price < invest_price:
                 html=html+f'<body><p style="color:red;">latest value is {price}<p></body>'
-                setuprasbi()
-                redled(1)
-                time.sleep(15)
-                redled(0)
+                redled('1')
+                time.sleep(.5)
+
 
 
         return html
