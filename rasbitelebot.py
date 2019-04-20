@@ -40,7 +40,9 @@ from flask import Response
 
 
 
-html='<h1> Rasbitelebot </h1> <p>Rasberry Telegram Bot has been created for the purpose of education.</p> In order to reach repositories visit https://github.com/arsivcix/rasbitelebot/'
+html0='<head> <title> Rasbitelebot Welcome</title> <meta http-equiv="refresh" content="30"> </head> <h1> Rasbitelebot Welcome </h1> <p>Rasberry Telegram Bot has been created for the purpose of education.</p> In order to reach repositories visit </p> <a href="https://github.com/arsivcix/rasbitelebot/">https://github.com/arsivcix/rasbitelebot/</a> '
+html = html0
+
 invest_symbol=''
 invest_price=0
 
@@ -125,7 +127,7 @@ def index():
                 # if there is a @command (invest or exit)
                 if command=='EXIT':
                     send_message(chat_id, 'copy exit')
-                    html='<h1> Rasbitelebot </h1> <p>Rasberry Telegram Bot has been created for the purpose of education.</p> In order to reach repositories visit https://github.com/arsivcix/rasbitelebot/'
+                    html=html0  #html zero position
                     invest_price=0
                     return Response('Ok', status=200)
                 if command=='INVEST': # loop is created here..
@@ -135,7 +137,7 @@ def index():
                     invest_symbol=symbol
                     invest_price=price
 
-                    html=f'<head> <title>Rasbitelebot On The Job</title> <meta http-equiv="refresh" content="30"> </head> <body> <h1>Rasbitelebot</h1><h2>You are selected to invest in {invest_symbol} </h2> <h3>The value is {invest_price}</h3> <h3> You can see price change from the red and green lights down and up. </h3> </body>'
+                    html=f'<head> <title>Rasbitelebot On The Job</title> <meta http-equiv="refresh" content="10"> </head> <body> <h1>Rasbitelebot</h1><h2>You are selected to invest in {invest_symbol} </h2> <h3>The value is {invest_price}</h3> <h3> You can see price change from the red and green lights down and up. </h3> </body>'
 
                     send_message(chat_id, f'You are invested in {invest_symbol} with value of {invest_price}')
                     return Response('Ok', status=200)
