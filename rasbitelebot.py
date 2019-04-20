@@ -190,9 +190,6 @@ def index():
             price=get_cmc_data(symbol)
             if not command: # only show value
                 send_message(chat_id,price)
-                pinson()
-                time.sleep(.2)
-                pinsoff()
                 return Response('Ok', status=200)
 
 
@@ -200,6 +197,24 @@ def index():
 
                 # if there is a @command (invest or exit)
 
+                if command=='PINON':
+                    pinson()
+
+                if command=='PINOFF':
+                    pinsoff()
+
+                if command=='REDON':
+                    redled(1)
+
+                if command=='REDOFF':
+                    redled(0)
+
+                if command =='GRON':
+                    grenled(1)
+
+                if command =='GROFF':
+                    greenled(0)
+                
                 if command=='EXIT':
                     send_message(chat_id, 'copy exit')
                     html=html0  #html zero position
