@@ -105,6 +105,9 @@ def send_message(chat_id, text='your text'):
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
+    global html
+    global invest_price
+    global invest_symbol
     if request.method == 'POST':
         msg = request.get_json()
         write_json(msg, 'telegram_request.json')
@@ -122,13 +125,13 @@ def index():
                 # if there is a @command (invest or exit)
                 if command=='EXIT':
                     send_message(chat_id, 'copy exit')
+                    html='<h1> Rasbitelebot </h1> <p>Rasberry Telegram Bot has been created for the purpose of education.</p> In order to reach repositories visit https://github.com/arsivcix/rasbitelebot/'
+                    invest_price=0
                     return Response('Ok', status=200)
                 if command=='INVEST': # loop is created here..
 
 
-                    global html
-                    global invest_price
-                    global invest_symbol
+
                     invest_symbol=symbol
                     invest_price=price
 
